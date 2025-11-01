@@ -2,6 +2,8 @@
 
 这是一个基于HarmonyOS(ArkTS)开发的记账应用,支持记录日常收支、按年月和分类进行统计分析。
 
+> 📖 **[快速开始指南](QUICK_START.md)** - 查看详细的使用教程和开发指南
+
 ## 功能特性
 
 ### 1. 记账功能
@@ -52,9 +54,8 @@ entry/src/main/ets/
   type: BillType,       // 类型(收入/支出)
   category: string,     // 分类
   date: string,         // 日期 YYYY-MM-DD
-  time: string,         // 时间 HH:mm:ss
   note: string,         // 备注
-  createTime: string    // 创建时间
+  createTime: string    // 创建时间戳
 }
 ```
 
@@ -92,7 +93,9 @@ entry/src/main/ets/
 - `updateBill()` - 更新账单
 - `queryAllBills()` - 查询所有账单
 - `queryBillsByYearMonth()` - 按年月查询
+- `queryBillsByYear()` - 按年查询
 - `queryBillsByCategory()` - 按分类查询
+- `queryBillsByYearAndCategory()` - 按年和分类查询
 - `queryBillsByYearMonthAndCategory()` - 按年月和分类查询
 
 ## 统计功能
@@ -134,12 +137,13 @@ entry/src/main/ets/
 2. 使用左右箭头切换月份
 3. 查看该月的收支统计
 4. 向左滑动账单可删除
+5. 点击"统计"按钮查看统计分析
 
 ### 4. 统计分析
-1. 点击主页"统计分析"按钮
+1. 点击主页"统计分析"按钮或账单列表页的"统计"按钮
 2. 查看月度收支总览
 3. 查看各分类支出占比
-4. 点击分类查看详细账单
+4. 点击分类卡片查看该分类的详细账单
 
 ## 技术栈
 
@@ -184,6 +188,8 @@ entry/src/main/ets/
 2. 所有金额保留两位小数
 3. 日期格式统一为 YYYY-MM-DD
 4. 删除操作不可恢复,请谨慎操作
+5. 账单按日期和创建时间降序排列
+6. 支持记住上次选择的分类,方便连续记账
 
 ## 许可证
 

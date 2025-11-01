@@ -123,11 +123,11 @@ hdc install entry/build/default/outputs/default/entry-default-signed.hap
 │ 收入¥0  支出¥0  结余¥0│
 ├─────────────────────┤
 │ 餐饮              │
-│ 2025年11月01日 12:30│
+│ 2025年11月01日      │
 │ 午餐         -¥50.00│
 ├─────────────────────┤
 │ 交通              │
-│ 2025年11月01日 08:00│
+│ 2025年11月01日      │
 │ 地铁         -¥6.00 │
 └─────────────────────┘
        [+]
@@ -143,9 +143,10 @@ hdc install entry/build/default/outputs/default/entry-default-signed.hap
 | type | TEXT | 类型(income/expense) |
 | category | TEXT | 分类 |
 | date | TEXT | 日期(YYYY-MM-DD) |
-| time | TEXT | 时间(HH:mm:ss) |
 | note | TEXT | 备注 |
-| createTime | TEXT | 创建时间 |
+| createTime | TEXT | 创建时间戳(ISO 8601格式) |
+
+**排序规则**: 按 `date` 降序,然后按 `createTime` 降序
 
 ## 🔧 调试技巧
 
@@ -173,7 +174,8 @@ ls -la
 2. **数据备份** - 目前不支持自动备份,请注意数据安全
 3. **删除操作** - 删除账单不可恢复,请谨慎操作
 4. **金额输入** - 只支持数字输入,自动保留两位小数
-5. **日期限制** - 暂不支持选择未来日期
+5. **排序规则** - 账单按日期降序,同一天按创建时间降序
+6. **分类记忆** - 应用会记住上次选择的分类,方便连续记账
 
 ## 🐛 常见问题
 
@@ -189,22 +191,33 @@ A: 首次使用时没有数据,需要先添加账单。
 ### Q4: 如何修改账单?
 A: 当前版本暂不支持修改,可以删除后重新添加。
 
+### Q5: 为什么同一天的账单顺序不一样?
+A: 同一天的账单按创建时间降序排列,最新添加的显示在最前面。
+
 ## 📈 下一步计划
 
-- [ ] 添加日期选择器
-- [ ] 支持账单编辑
+- [ ] 支持账单编辑功能
 - [ ] 添加搜索功能
-- [ ] 图表可视化
-- [ ] 数据导出功能
+- [ ] 图表可视化(饼图、折线图)
+- [ ] 数据导入导出(JSON/CSV)
 - [ ] 预算管理
 - [ ] 多账本支持
+- [ ] 周期性账单(如每月固定支出)
+- [ ] 账单图片附件
 
 ## 📞 技术支持
 
 如果遇到问题,请查看:
 - [HarmonyOS开发文档](https://developer.huawei.com/consumer/cn/doc/)
 - [ArkTS开发指南](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/arkts-get-started-V5)
-- 项目README: `README_BILL_APP.md`
+- [关系型数据库开发](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/data-persistence-by-rdb-store-V5)
+- 项目详细说明: [README.md](README.md)
+
+## 🔗 相关文档
+
+- [README.md](README.md) - 项目详细说明文档
+- [FEATURE_UPDATE.md](FEATURE_UPDATE.md) - 功能更新日志
+- [README_BILL_APP.md](README_BILL_APP.md) - 账单应用专题文档
 
 ---
 
