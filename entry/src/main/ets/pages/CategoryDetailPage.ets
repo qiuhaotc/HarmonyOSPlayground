@@ -156,11 +156,6 @@ struct CategoryDetailPage {
           .fontWeight(FontWeight.Medium)
           .fontColor('#333333')
 
-        Text(DateUtil.formatTimeShort(bill.time))
-          .fontSize(12)
-          .fontColor('#999999')
-          .margin({ top: 4 })
-
         if (bill.note) {
           Text(bill.note)
             .fontSize(12)

@@ -329,7 +329,6 @@ struct AddBillPage {
             this.selectedType,
             this.selectedCategory,
             this.selectedDate,
-            DateUtil.getCurrentTime(),
             this.note
         );
 

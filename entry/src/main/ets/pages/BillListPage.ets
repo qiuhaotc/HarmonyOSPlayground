@@ -245,7 +245,7 @@ struct BillListPage {
                     .fontWeight(FontWeight.Medium)
                     .fontColor('#333333')
 
-                Text(DateUtil.formatDateChinese(bill.date) + ' ' + DateUtil.formatTimeShort(bill.time))
+                Text(DateUtil.formatDateChinese(bill.date))
                     .fontSize(12)
                     .fontColor('#999999')
                     .margin({ top: 4 })

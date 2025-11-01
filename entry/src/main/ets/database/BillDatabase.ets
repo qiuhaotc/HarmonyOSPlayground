@@ -22,7 +22,6 @@ export class BillDatabase {
       type TEXT NOT NULL,
       category TEXT NOT NULL,
       date TEXT NOT NULL,
-      time TEXT NOT NULL,
       note TEXT,
       createTime TEXT NOT NULL
     )
@@ -68,7 +67,6 @@ export class BillDatabase {
             'type': bill.type,
             'category': bill.category,
             'date': bill.date,
-            'time': bill.time,
             'note': bill.note,
             'createTime': bill.createTime || new Date().toISOString()
         };
@@ -122,7 +120,6 @@ export class BillDatabase {
             'type': bill.type,
             'category': bill.category,
             'date': bill.date,
-            'time': bill.time,
             'note': bill.note
         };
 
@@ -170,7 +167,7 @@ export class BillDatabase {
         }
 
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -194,7 +191,7 @@ export class BillDatabase {
         const yearMonth = `${year}-${month.padStart(2, '0')}`;
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
         predicates.like('date', `${yearMonth}%`);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -217,7 +214,7 @@ export class BillDatabase {
 
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
         predicates.like('date', `${year}%`);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -240,7 +237,7 @@ export class BillDatabase {
 
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
         predicates.equalTo('category', category);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -264,7 +261,7 @@ export class BillDatabase {
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
         predicates.like('date', `${year}%`);
         predicates.equalTo('category', category);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -289,7 +286,7 @@ export class BillDatabase {
         const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
         predicates.like('date', `${yearMonth}%`);
         predicates.equalTo('category', category);
-        predicates.orderByDesc('date').orderByDesc('time');
+        predicates.orderByDesc('date').orderByDesc('createTime');
 
         try {
             const resultSet = await this.rdbStore.query(predicates);
@@ -314,7 +311,6 @@ export class BillDatabase {
                 resultSet.getString(resultSet.getColumnIndex('type')) as BillType,
                 resultSet.getString(resultSet.getColumnIndex('category')),
                 resultSet.getString(resultSet.getColumnIndex('date')),
-                resultSet.getString(resultSet.getColumnIndex('time')),
                 resultSet.getString(resultSet.getColumnIndex('note'))
             );
             bill.id = resultSet.getLong(resultSet.getColumnIndex('id'));

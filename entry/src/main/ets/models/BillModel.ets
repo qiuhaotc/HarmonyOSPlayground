@@ -34,16 +34,14 @@ export class BillModel {
   type: BillType = BillType.EXPENSE; // 类型
   category: string = ''; // 分类
   date: string = ''; // 日期 格式: YYYY-MM-DD
-  time: string = ''; // 时间 格式: HH:mm:ss
   note: string = ''; // 备注
   createTime: string = ''; // 创建时间
 
-  constructor(amount: number, type: BillType, category: string, date: string, time: string, note: string = '') {
+  constructor(amount: number, type: BillType, category: string, date: string, note: string = '') {
     this.amount = amount;
     this.type = type;
     this.category = category;
     this.date = date;
-    this.time = time;
     this.note = note;
     this.createTime = new Date().toISOString();
   }
