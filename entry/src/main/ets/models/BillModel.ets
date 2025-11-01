@@ -86,7 +86,7 @@ export class BillStatistics {
  */
 export const DEFAULT_CATEGORIES: BillCategory[] = [
   // 支出分类
-  new BillCategory(1, '餐饮', BillType.EXPENSE, '🍔', '#FF6B6B'),
+  new BillCategory(1, '餐饮', BillType.EXPENSE, '🥢', '#FF6B6B'),
   new BillCategory(2, '交通', BillType.EXPENSE, '🚗', '#4ECDC4'),
   new BillCategory(3, '购物', BillType.EXPENSE, '🛍️', '#45B7D1'),
   new BillCategory(4, '娱乐', BillType.EXPENSE, '🎬', '#96CEB4'),
@@ -103,3 +103,24 @@ export const DEFAULT_CATEGORIES: BillCategory[] = [
   new BillCategory(13, '兼职', BillType.INCOME, '💼', '#FDCB6E'),
   new BillCategory(14, '其他', BillType.INCOME, '📝', '#B2BEC3'),
 ];
+
+/**
+ * 获取支出分类列表
+ */
+export function getExpenseCategories(): BillCategory[] {
+  return DEFAULT_CATEGORIES.filter(cat => cat.type === BillType.EXPENSE);
+}
+
+/**
+ * 获取收入分类列表
+ */
+export function getIncomeCategories(): BillCategory[] {
+  return DEFAULT_CATEGORIES.filter(cat => cat.type === BillType.INCOME);
+}
+
+/**
+ * 根据类型获取分类列表
+ */
+export function getCategoriesByType(type: BillType): BillCategory[] {
+  return DEFAULT_CATEGORIES.filter(cat => cat.type === type);
+}

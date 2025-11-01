@@ -48,15 +48,28 @@ struct CategoryDetailPage {
       // 标题栏
       this.buildTitleBar();
 
-      // 统计卡片
-      this.buildStatisticsCard();
+      // 可滚动内容区域
+      Scroll() {
+        Column() {
+          // 统计卡片
+          this.buildStatisticsCard();
 
-      // 账单列表
-      this.buildBillList();
+          // 账单列表
+          this.buildBillList();
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Start)
+      }
+      .layoutWeight(1)
+      .scrollBar(BarState.Auto)
+      .scrollable(ScrollDirection.Vertical)
+      .edgeEffect(EdgeEffect.Spring)
+      .align(Alignment.Top)
     }
     .width('100%')
     .height('100%')
     .backgroundColor('#F5F5F5')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
@@ -119,7 +132,6 @@ struct CategoryDetailPage {
       })
     }
     .width('100%')
-    .layoutWeight(1)
     .margin({ top: 12 })
   }
 

@@ -52,7 +52,7 @@ struct BillListPage {
       // 统计卡片
       this.buildStatisticsCard();
 
-      // 账单列表
+      // 账单列表（已支持滚动）
       this.buildBillList();
 
       // 添加按钮
@@ -61,17 +61,25 @@ struct BillListPage {
     .width('100%')
     .height('100%')
     .backgroundColor('#F5F5F5')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
   buildTitleBar() {
     Row() {
+      Text('返回')
+        .fontSize(16)
+        .fontColor('#333333')
+        .onClick(() => {
+          router.back();
+        })
+
       Text('账单列表')
         .fontSize(20)
         .fontWeight(FontWeight.Bold)
         .fontColor('#333333')
-
-      Blank()
+        .layoutWeight(1)
+        .textAlign(TextAlign.Center)
 
       Text('统计')
         .fontSize(16)

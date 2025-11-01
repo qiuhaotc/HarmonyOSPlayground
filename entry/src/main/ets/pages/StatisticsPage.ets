@@ -88,18 +88,31 @@ struct StatisticsPage {
             // 标题栏
             this.buildTitleBar();
 
-            // 日期选择器
-            this.buildDateSelector();
+            // 可滚动内容区域
+            Scroll() {
+                Column() {
+                    // 日期选择器
+                    this.buildDateSelector();
 
-            // 总览卡片
-            this.buildOverviewCard();
+                    // 总览卡片
+                    this.buildOverviewCard();
 
-            // 分类统计列表
-            this.buildCategoryStatsList();
+                    // 分类统计列表
+                    this.buildCategoryStatsList();
+                }
+                .width('100%')
+                .alignItems(HorizontalAlign.Start)
+            }
+            .layoutWeight(1)
+            .scrollBar(BarState.Auto)
+            .scrollable(ScrollDirection.Vertical)
+            .edgeEffect(EdgeEffect.Spring)
+            .align(Alignment.Top)
         }
         .width('100%')
         .height('100%')
         .backgroundColor('#F5F5F5')
+        .alignItems(HorizontalAlign.Start)
     }
 
     @Builder
@@ -235,19 +248,15 @@ struct StatisticsPage {
                     .textAlign(TextAlign.Center)
                     .padding(32)
             } else {
-                List() {
+                Column() {
                     ForEach(this.categoryStats, (stat: CategoryStatItem) => {
-                        ListItem() {
-                            this.buildCategoryItem(stat);
-                        }
+                        this.buildCategoryItem(stat);
                     })
                 }
                 .width('100%')
-                .layoutWeight(1)
             }
         }
         .width('100%')
-        .layoutWeight(1)
         .margin({ top: 12 })
         .backgroundColor('#FFFFFF')
         .borderRadius(8)

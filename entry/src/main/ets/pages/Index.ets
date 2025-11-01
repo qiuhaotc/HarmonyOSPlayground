@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import { BillDatabase } from '../database/BillDatabase';
+import { PreferencesUtil } from '../utils/PreferencesUtil';
 
 /**
  * 主页面 - 记账APP
@@ -10,11 +11,15 @@ struct Index {
   @State isInitialized: boolean = false;
 
   private billDb: BillDatabase = BillDatabase.getInstance();
+  private prefsUtil: PreferencesUtil = PreferencesUtil.getInstance();
 
   async aboutToAppear() {
     try {
+      const context = getContext(this);
       // 初始化数据库
-      await this.billDb.init(getContext(this));
+      await this.billDb.init(context);
+      // 初始化偏好设置
+      await this.prefsUtil.init(context);
       this.isInitialized = true;
     } catch (err) {
       console.error('初始化失败', JSON.stringify(err));
