@@ -428,6 +428,7 @@ struct BillListPage {
                 message: `文件包含 ${bills.length} 条账单记录，是否导入？\n主键相同的记录将被更新`,
                 primaryButton:{
                     value: '导入',
+                    fontColor: '#FF0000',
                     action: async () => {
                         await this.performImport(bills);
                     }
