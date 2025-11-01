@@ -73,6 +73,11 @@ export class BillDatabase {
             'createTime': bill.createTime || new Date().toISOString()
         };
 
+        // 如果bill有id且id>0,则包含id字段(用于导入时保留原ID)
+        if (bill.id && bill.id > 0) {
+            valueBucket['id'] = bill.id;
+        }
+
         try {
             const rowId = await this.rdbStore.insert(this.TABLE_NAME, valueBucket);
             console.info('BillDatabase: 插入账单成功, rowId=' + rowId);
@@ -135,6 +140,28 @@ export class BillDatabase {
     }
 
     /**
+     * 根据ID查询账单
+     */
+    async queryBillById(id: number): Promise<BillModel | null> {
+        if (!this.rdbStore) {
+            throw new Error('数据库未初始化');
+        }
+
+        const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
+        predicates.equalTo('id', id);
+
+        try {
+            const resultSet = await this.rdbStore.query(predicates);
+            const bills = this.convertResultSetToBills(resultSet);
+            resultSet.close();
+            return bills.length > 0 ? bills[0] : null;
+        } catch (err) {
+            console.error('BillDatabase: 根据ID查询账单失败', JSON.stringify(err));
+            throw new Error(`根据ID查询账单失败: ${err}`);
+        }
+    }
+
+    /**
      * 查询所有账单
      */
     async queryAllBills(): Promise<BillModel[]> {
@@ -181,6 +208,29 @@ export class BillDatabase {
     }
 
     /**
+     * 按年查询账单
+     */
+    async queryBillsByYear(year: string): Promise<BillModel[]> {
+        if (!this.rdbStore) {
+            throw new Error('数据库未初始化');
+        }
+
+        const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
+        predicates.like('date', `${year}%`);
+        predicates.orderByDesc('date').orderByDesc('time');
+
+        try {
+            const resultSet = await this.rdbStore.query(predicates);
+            const bills = this.convertResultSetToBills(resultSet);
+            resultSet.close();
+            return bills;
+        } catch (err) {
+            console.error('BillDatabase: 按年查询账单失败', JSON.stringify(err));
+            throw new Error(`按年查询账单失败: ${err}`);
+        }
+    }
+
+    /**
      * 按分类查询账单
      */
     async queryBillsByCategory(category: string): Promise<BillModel[]> {
@@ -200,6 +250,30 @@ export class BillDatabase {
         } catch (err) {
             console.error('BillDatabase: 按分类查询账单失败', JSON.stringify(err));
             throw new Error(`按分类查询账单失败: ${err}`);
+        }
+    }
+
+    /**
+     * 按年和分类查询账单
+     */
+    async queryBillsByYearAndCategory(year: string, category: string): Promise<BillModel[]> {
+        if (!this.rdbStore) {
+            throw new Error('数据库未初始化');
+        }
+
+        const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
+        predicates.like('date', `${year}%`);
+        predicates.equalTo('category', category);
+        predicates.orderByDesc('date').orderByDesc('time');
+
+        try {
+            const resultSet = await this.rdbStore.query(predicates);
+            const bills = this.convertResultSetToBills(resultSet);
+            resultSet.close();
+            return bills;
+        } catch (err) {
+            console.error('BillDatabase: 按年和分类查询账单失败', JSON.stringify(err));
+            throw new Error(`按年和分类查询账单失败: ${err}`);
         }
     }
 

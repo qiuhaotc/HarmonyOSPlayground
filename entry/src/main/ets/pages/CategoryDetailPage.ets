@@ -22,8 +22,8 @@ struct CategoryDetailPage {
     // 获取路由参数
     const params = router.getParams() as Record<string, string>;
     this.category = params.category || '';
-    this.year = params.year || DateUtil.getCurrentYear();
-    this.month = params.month || DateUtil.getCurrentMonth();
+    this.year = params.year || '';
+    this.month = params.month || ''; // 月份可能为空,表示按年查询
 
     this.loadBills();
   }
@@ -31,7 +31,16 @@ struct CategoryDetailPage {
   // 加载账单数据
   async loadBills() {
     try {
-      this.bills = await this.billDb.queryBillsByYearMonthAndCategory(this.year, this.month, this.category);
+      if (this.year && this.month) {
+        // 按年月查询
+        this.bills = await this.billDb.queryBillsByYearMonthAndCategory(this.year, this.month, this.category);
+      } else if (this.year) {
+        // 按年查询
+        this.bills = await this.billDb.queryBillsByYearAndCategory(this.year, this.category);
+      } else {
+        // 查询所有该分类的账单
+        this.bills = await this.billDb.queryBillsByCategory(this.category);
+      }
       this.calculateTotal();
     } catch (err) {
       console.error('加载账单失败', JSON.stringify(err));
@@ -100,7 +109,9 @@ struct CategoryDetailPage {
   @Builder
   buildStatisticsCard() {
     Column() {
-      Text(DateUtil.formatYearMonth(`${this.year}-${this.month}`))
+      Text(this.year && this.month 
+        ? DateUtil.formatYearMonth(`${this.year}-${this.month}`)
+        : (this.year ? `${this.year}年` : '全部账单'))
         .fontSize(14)
         .fontColor('#666666')
 
@@ -129,6 +140,7 @@ struct CategoryDetailPage {
         ListItem() {
           this.buildBillItem(bill);
         }
+        .swipeAction({ end: this.buildDeleteButton(bill) })
       })
     }
     .width('100%')
@@ -169,5 +181,31 @@ struct CategoryDetailPage {
     .backgroundColor('#FFFFFF')
     .borderRadius(8)
     .margin({ left: 12, right: 12, bottom: 8 })
+  }
+
+  @Builder
+  buildDeleteButton(bill: BillModel) {
+    Button('删除')
+      .fontSize(16)
+      .fontColor('#FFFFFF')
+      .backgroundColor('#FF6B6B')
+      .height('100%')
+      .onClick(() => {
+        this.deleteBill(bill);
+      })
+  }
+
+  // 删除账单
+  async deleteBill(bill: BillModel) {
+    if (!bill.id) {
+      return;
+    }
+
+    try {
+      await this.billDb.deleteBill(bill.id);
+      await this.loadBills();
+    } catch (err) {
+      console.error('删除账单失败', JSON.stringify(err));
+    }
   }
 }

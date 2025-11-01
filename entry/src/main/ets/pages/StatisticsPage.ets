@@ -12,6 +12,13 @@ interface CategoryStatItem {
     type: BillType;
 }
 
+// 路由参数接口
+interface RouteParams {
+    category: string;
+    year: string;
+    month?: string;
+}
+
 /**
  * 统计页面
  */
@@ -24,16 +31,29 @@ struct StatisticsPage {
     @State categoryStats: CategoryStatItem[] = [];
     @State totalIncome: number = 0;
     @State totalExpense: number = 0;
+    @State statisticsMode: 'month' | 'year' | 'all' = 'month'; // 统计模式：按月、按年或全部
     private billDb: BillDatabase = BillDatabase.getInstance();
 
     aboutToAppear() {
         this.loadStatistics();
     }
 
+    // 页面每次显示时刷新数据
+    onPageShow() {
+        this.loadStatistics();
+    }
+
     // 加载统计数据
     async loadStatistics() {
         try {
-            this.bills = await this.billDb.queryBillsByYearMonth(this.selectedYear, this.selectedMonth);
+            if (this.statisticsMode === 'month') {
+                this.bills = await this.billDb.queryBillsByYearMonth(this.selectedYear, this.selectedMonth);
+            } else if (this.statisticsMode === 'year') {
+                this.bills = await this.billDb.queryBillsByYear(this.selectedYear);
+            } else {
+                // 全部统计
+                this.bills = await this.billDb.queryAllBills();
+            }
             this.calculateCategoryStatistics();
         } catch (err) {
             console.error('加载统计数据失败', JSON.stringify(err));
@@ -142,36 +162,88 @@ struct StatisticsPage {
 
     @Builder
     buildDateSelector() {
-        Row() {
-            Button('<')
-                .fontSize(18)
-                .fontColor('#333333')
-                .backgroundColor('#F0F0F0')
-                .width(40)
-                .height(40)
-                .onClick(() => {
-                    this.previousMonth();
-                })
+        Column() {
+            // 模式切换按钮
+            Row() {
+                Button(this.statisticsMode === 'month' ? '按月' : (this.statisticsMode === 'year' ? '按年' : '全部'))
+                    .fontSize(14)
+                    .fontColor('#007DFF')
+                    .backgroundColor('#E6F2FF')
+                    .height(32)
+                    .onClick(() => {
+                        if (this.statisticsMode === 'month') {
+                            this.statisticsMode = 'year';
+                        } else if (this.statisticsMode === 'year') {
+                            this.statisticsMode = 'all';
+                        } else {
+                            this.statisticsMode = 'month';
+                        }
+                        this.loadStatistics();
+                    })
+            }
+            .width('100%')
+            .padding({
+                left: 16,
+                right: 16,
+                top: 12,
+                bottom: 8
+            })
+            .justifyContent(FlexAlign.End)
 
-            Text(DateUtil.formatYearMonth(`${this.selectedYear}-${this.selectedMonth}`))
-                .fontSize(18)
-                .fontWeight(FontWeight.Medium)
-                .fontColor('#333333')
-                .layoutWeight(1)
-                .textAlign(TextAlign.Center)
+            // 日期选择器 (仅在按月或按年模式下显示)
+            if (this.statisticsMode !== 'all') {
+                Row() {
+                    Button('<')
+                        .fontSize(18)
+                        .fontColor('#333333')
+                        .backgroundColor('#F0F0F0')
+                        .width(40)
+                        .height(40)
+                        .onClick(() => {
+                            if (this.statisticsMode === 'month') {
+                                this.previousMonth();
+                            } else {
+                                this.previousYear();
+                            }
+                        })
 
-            Button('>')
-                .fontSize(18)
-                .fontColor('#333333')
-                .backgroundColor('#F0F0F0')
-                .width(40)
-                .height(40)
-                .onClick(() => {
-                    this.nextMonth();
-                })
+                    Text(this.statisticsMode === 'month'
+                        ? DateUtil.formatYearMonth(`${this.selectedYear}-${this.selectedMonth}`)
+                        : `${this.selectedYear}年`)
+                        .fontSize(18)
+                        .fontWeight(FontWeight.Medium)
+                        .fontColor('#333333')
+                        .layoutWeight(1)
+                        .textAlign(TextAlign.Center)
+
+                Button('>')
+                    .fontSize(18)
+                    .fontColor('#333333')
+                    .backgroundColor('#F0F0F0')
+                    .width(40)
+                    .height(40)
+                    .onClick(() => {
+                        if (this.statisticsMode === 'month') {
+                            this.nextMonth();
+                        } else {
+                            this.nextYear();
+                        }
+                    })
+                }
+                .width('100%')
+                .padding({ left: 16, right: 16, bottom: 12 })
+            } else {
+                // 全部统计模式下显示提示文本
+                Text('全部账单统计')
+                    .fontSize(18)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor('#333333')
+                    .width('100%')
+                    .textAlign(TextAlign.Center)
+                    .padding(12)
+            }
         }
         .width('100%')
-        .padding(16)
         .backgroundColor('#FFFFFF')
         .margin({ top: 1 })
     }
@@ -306,14 +378,22 @@ struct StatisticsPage {
         .width('100%')
         .onClick(() => {
             // 跳转到分类详情
+            let params: RouteParams = {
+                category: stat.category,
+                year: this.selectedYear
+            };
+            if (this.statisticsMode === 'month') {
+                // 按月统计时传递月份参数
+                params.month = this.selectedMonth;
+            } else if (this.statisticsMode === 'all') {
+                // 全部统计时不传递年份,通过year为空字符串标识
+                params.year = '';
+            }
+            // 按年统计时只传递年份
             router.pushUrl({
                 url: 'pages/CategoryDetailPage',
-                params: {
-                    category: stat.category,
-                    year: this.selectedYear,
-                    month: this.selectedMonth
-                }
-            });
+                params: params
+            } as router.RouterOptions);
         })
     }
 
@@ -352,6 +432,22 @@ struct StatisticsPage {
 
         this.selectedYear = String(year);
         this.selectedMonth = String(month).padStart(2, '0');
+        this.loadStatistics();
+    }
+
+    // 上一年
+    previousYear() {
+        let year = parseInt(this.selectedYear);
+        year--;
+        this.selectedYear = String(year);
+        this.loadStatistics();
+    }
+
+    // 下一年
+    nextYear() {
+        let year = parseInt(this.selectedYear);
+        year++;
+        this.selectedYear = String(year);
         this.loadStatistics();
     }
 }

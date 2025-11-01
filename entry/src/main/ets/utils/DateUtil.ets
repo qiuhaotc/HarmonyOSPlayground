@@ -14,6 +14,16 @@ export class DateUtil {
   }
 
   /**
+   * 格式化日期对象为字符串 格式: YYYY-MM-DD
+   */
+  static formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  /**
    * 获取当前时间 格式: HH:mm:ss
    */
   static getCurrentTime(): string {
