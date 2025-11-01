@@ -1,6 +1,9 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { BillDatabase } from '../database/BillDatabase';
+import { RecurringBillDatabase } from '../database/RecurringBillDatabase';
+import { RecurringBillService } from '../utils/RecurringBillService';
 
 const DOMAIN = 0x0000;
 
@@ -12,7 +15,33 @@ export default class EntryAbility extends UIAbility {
         } catch (err) {
             hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
         }
+        
+        // 初始化数据库并生成定期账单
+        this.initDatabaseAndGenerateRecurringBills();
+        
         hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
+    }
+    
+    // 初始化数据库并生成定期账单
+    private async initDatabaseAndGenerateRecurringBills(): Promise<void> {
+        try {
+            // 初始化账单数据库
+            const billDb = BillDatabase.getInstance();
+            await billDb.init(this.context);
+            hilog.info(DOMAIN, 'testTag', 'BillDatabase initialized');
+            
+            // 初始化定期记账数据库
+            const recurringDb = RecurringBillDatabase.getInstance();
+            await recurringDb.init(this.context);
+            hilog.info(DOMAIN, 'testTag', 'RecurringBillDatabase initialized');
+            
+            // 生成定期账单
+            const recurringService = RecurringBillService.getInstance();
+            await recurringService.generateRecurringBills();
+            hilog.info(DOMAIN, 'testTag', 'Recurring bills generated');
+        } catch (err) {
+            hilog.error(DOMAIN, 'testTag', 'Failed to init database or generate recurring bills. Cause: %{public}s', JSON.stringify(err));
+        }
     }
 
     onDestroy(): void {

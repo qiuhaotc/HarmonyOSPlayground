@@ -65,6 +65,15 @@ struct Index {
               router.pushUrl({ url: 'pages/StatisticsPage' });
             })
 
+          Button('定期记账')
+            .fontSize(20)
+            .backgroundColor('#FF9800')
+            .width('80%')
+            .height(56)
+            .onClick(() => {
+              router.pushUrl({ url: 'pages/RecurringBillManagePage' });
+            })
+
           Button('关于')
             .fontSize(20)
             .backgroundColor($r('app.color.text_secondary'))

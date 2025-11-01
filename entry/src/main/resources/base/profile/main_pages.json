@@ -5,6 +5,7 @@
     "pages/BillListPage",
     "pages/StatisticsPage",
     "pages/CategoryDetailPage",
-    "pages/AboutPage"
+    "pages/AboutPage",
+    "pages/RecurringBillManagePage"
   ]
 }
