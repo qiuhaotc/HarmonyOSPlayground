@@ -1,4 +1,4 @@
-import { BillModel, BillType } from '../models/BillModel';
+import { BillModel, BillType, DEFAULT_CATEGORIES } from '../models/BillModel';
 import { BillDatabase } from '../database/BillDatabase';
 import { BillStatisticsUtil } from '../utils/BillStatisticsUtil';
 import { DateUtil } from '../utils/DateUtil';
@@ -48,6 +48,12 @@ struct BillListPage {
         this.totalIncome = stats.totalIncome;
         this.totalExpense = stats.totalExpense;
         this.balance = stats.balance;
+    }
+
+    // 获取分类图标
+    getCategoryIcon(categoryName: string): string {
+        const category = DEFAULT_CATEGORIES.find(cat => cat.name === categoryName);
+        return category ? category.icon : '📝';
     }
 
     build() {
@@ -239,6 +245,11 @@ struct BillListPage {
     @Builder
     buildBillItem(bill: BillModel) {
         Row() {
+            // 分类图标
+            Text(this.getCategoryIcon(bill.category))
+                .fontSize(32)
+                .margin({ right: 12 })
+
             Column() {
                 Text(bill.category)
                     .fontSize(16)
@@ -255,6 +266,8 @@ struct BillListPage {
                         .fontSize(12)
                         .fontColor('#666666')
                         .margin({ top: 4 })
+                        .maxLines(1)
+                        .textOverflow({ overflow: TextOverflow.Ellipsis })
                 }
             }
             .alignItems(HorizontalAlign.Start)

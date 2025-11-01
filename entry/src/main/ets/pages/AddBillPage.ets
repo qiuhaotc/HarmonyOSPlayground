@@ -101,8 +101,12 @@ struct AddBillPage {
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
 
-            Text('   ')
+            Text('账单')
                 .fontSize(16)
+                .fontColor('#007DFF')
+                .onClick(() => {
+                    router.pushUrl({ url: 'pages/BillListPage' });
+                })
         }
         .width('100%')
         .height(56)

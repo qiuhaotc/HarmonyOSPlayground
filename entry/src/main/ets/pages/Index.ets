@@ -39,8 +39,7 @@ struct Index {
       Column({ space: 16 }) {
         Button('记一笔')
           .fontSize(20)
-          .fontColor('#FFFFFF')
-          .backgroundColor('#007DFF')
+          .backgroundColor($r('sys.color.brand'))
           .width('80%')
           .height(56)
           .onClick(() => {
@@ -49,7 +48,6 @@ struct Index {
 
         Button('账单列表')
           .fontSize(20)
-          .fontColor('#FFFFFF')
           .backgroundColor('#00B894')
           .width('80%')
           .height(56)
@@ -59,12 +57,20 @@ struct Index {
 
         Button('统计分析')
           .fontSize(20)
-          .fontColor('#FFFFFF')
           .backgroundColor('#6C5CE7')
           .width('80%')
           .height(56)
           .onClick(() => {
             router.pushUrl({ url: 'pages/StatisticsPage' });
+          })
+
+        Button('关于')
+          .fontSize(20)
+          .backgroundColor('#95A5A6')
+          .width('80%')
+          .height(56)
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/AboutPage' });
           })
       }
       .width('100%')
@@ -74,7 +80,7 @@ struct Index {
       Text('简单记账，清晰理财')
         .fontSize(14)
         .fontColor('#999999')
-        .margin({ top: 60 })
+        .margin({ top: 40 })
 
       if (!this.isInitialized) {
         Text('正在初始化...')
