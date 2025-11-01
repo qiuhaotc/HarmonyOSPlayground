@@ -1,0 +1,161 @@
+import { BillModel, BillType } from '../models/BillModel';
+import { BillDatabase } from '../database/BillDatabase';
+import { BillStatisticsUtil } from '../utils/BillStatisticsUtil';
+import { DateUtil } from '../utils/DateUtil';
+import router from '@ohos.router';
+
+/**
+ * 分类详情页面
+ */
+@Entry
+@Component
+struct CategoryDetailPage {
+  @State bills: BillModel[] = [];
+  @State category: string = '';
+  @State year: string = '';
+  @State month: string = '';
+  @State totalAmount: number = 0;
+
+  private billDb: BillDatabase = BillDatabase.getInstance();
+
+  aboutToAppear() {
+    // 获取路由参数
+    const params = router.getParams() as Record<string, string>;
+    this.category = params.category || '';
+    this.year = params.year || DateUtil.getCurrentYear();
+    this.month = params.month || DateUtil.getCurrentMonth();
+
+    this.loadBills();
+  }
+
+  // 加载账单数据
+  async loadBills() {
+    try {
+      this.bills = await this.billDb.queryBillsByYearMonthAndCategory(this.year, this.month, this.category);
+      this.calculateTotal();
+    } catch (err) {
+      console.error('加载账单失败', JSON.stringify(err));
+    }
+  }
+
+  // 计算总金额
+  calculateTotal() {
+    this.totalAmount = this.bills.reduce((sum, bill) => sum + bill.amount, 0);
+  }
+
+  build() {
+    Column() {
+      // 标题栏
+      this.buildTitleBar();
+
+      // 统计卡片
+      this.buildStatisticsCard();
+
+      // 账单列表
+      this.buildBillList();
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#F5F5F5')
+  }
+
+  @Builder
+  buildTitleBar() {
+    Row() {
+      Text('返回')
+        .fontSize(16)
+        .fontColor('#333333')
+        .onClick(() => {
+          router.back();
+        })
+
+      Text(this.category + ' 详情')
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .layoutWeight(1)
+        .textAlign(TextAlign.Center)
+
+      Text('   ')
+        .fontSize(16)
+    }
+    .width('100%')
+    .height(56)
+    .padding({ left: 16, right: 16 })
+    .backgroundColor('#FFFFFF')
+  }
+
+  @Builder
+  buildStatisticsCard() {
+    Column() {
+      Text(DateUtil.formatYearMonth(`${this.year}-${this.month}`))
+        .fontSize(14)
+        .fontColor('#666666')
+
+      Text('¥' + BillStatisticsUtil.formatAmount(this.totalAmount))
+        .fontSize(32)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#333333')
+        .margin({ top: 8 })
+
+      Text('共 ' + this.bills.length + ' 笔')
+        .fontSize(14)
+        .fontColor('#999999')
+        .margin({ top: 8 })
+    }
+    .width('100%')
+    .padding(24)
+    .backgroundColor('#FFFFFF')
+    .margin({ top: 12 })
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildBillList() {
+    List() {
+      ForEach(this.bills, (bill: BillModel) => {
+        ListItem() {
+          this.buildBillItem(bill);
+        }
+      })
+    }
+    .width('100%')
+    .layoutWeight(1)
+    .margin({ top: 12 })
+  }
+
+  @Builder
+  buildBillItem(bill: BillModel) {
+    Row() {
+      Column() {
+        Text(DateUtil.formatDateChinese(bill.date))
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .fontColor('#333333')
+
+        Text(DateUtil.formatTimeShort(bill.time))
+          .fontSize(12)
+          .fontColor('#999999')
+          .margin({ top: 4 })
+
+        if (bill.note) {
+          Text(bill.note)
+            .fontSize(12)
+            .fontColor('#666666')
+            .margin({ top: 4 })
+        }
+      }
+      .alignItems(HorizontalAlign.Start)
+      .layoutWeight(1)
+
+      Text((bill.type === BillType.INCOME ? '+' : '-') + '¥' + BillStatisticsUtil.formatAmount(bill.amount))
+        .fontSize(18)
+        .fontWeight(FontWeight.Bold)
+        .fontColor(bill.type === BillType.INCOME ? '#00B894' : '#FF6B6B')
+    }
+    .width('100%')
+    .padding(16)
+    .backgroundColor('#FFFFFF')
+    .borderRadius(8)
+    .margin({ left: 12, right: 12, bottom: 8 })
+  }
+}
