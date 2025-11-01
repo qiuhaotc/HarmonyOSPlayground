@@ -77,7 +77,7 @@ struct CategoryDetailPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F5F5F5')
+    .backgroundColor($r('app.color.page_background'))
     .alignItems(HorizontalAlign.Start)
   }
 
@@ -86,7 +86,7 @@ struct CategoryDetailPage {
     Row() {
       Text('返回')
         .fontSize(16)
-        .fontColor('#333333')
+        .fontColor($r('app.color.text_primary'))
         .onClick(() => {
           router.back();
         })
@@ -94,6 +94,7 @@ struct CategoryDetailPage {
       Text(this.category + ' 详情')
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
+        .fontColor($r('app.color.text_primary'))
         .layoutWeight(1)
         .textAlign(TextAlign.Center)
 
@@ -103,7 +104,7 @@ struct CategoryDetailPage {
     .width('100%')
     .height(56)
     .padding({ left: 16, right: 16 })
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.card_background'))
   }
 
   @Builder
@@ -113,22 +114,22 @@ struct CategoryDetailPage {
         ? DateUtil.formatYearMonth(`${this.year}-${this.month}`)
         : (this.year ? `${this.year}年` : '全部账单'))
         .fontSize(14)
-        .fontColor('#666666')
+        .fontColor($r('app.color.text_secondary'))
 
       Text('¥' + BillStatisticsUtil.formatAmount(this.totalAmount))
         .fontSize(32)
         .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
+        .fontColor($r('app.color.text_primary'))
         .margin({ top: 8 })
 
       Text('共 ' + this.bills.length + ' 笔')
         .fontSize(14)
-        .fontColor('#999999')
+        .fontColor($r('app.color.text_tertiary'))
         .margin({ top: 8 })
     }
     .width('100%')
     .padding(24)
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.card_background'))
     .margin({ top: 12 })
     .borderRadius(8)
   }
@@ -154,12 +155,12 @@ struct CategoryDetailPage {
         Text(DateUtil.formatDateChinese(bill.date))
           .fontSize(16)
           .fontWeight(FontWeight.Medium)
-          .fontColor('#333333')
+          .fontColor($r('app.color.text_primary'))
 
         if (bill.note) {
           Text(bill.note)
             .fontSize(12)
-            .fontColor('#666666')
+            .fontColor($r('app.color.text_secondary'))
             .margin({ top: 4 })
         }
       }
@@ -169,11 +170,11 @@ struct CategoryDetailPage {
       Text((bill.type === BillType.INCOME ? '+' : '-') + '¥' + BillStatisticsUtil.formatAmount(bill.amount))
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
-        .fontColor(bill.type === BillType.INCOME ? '#00B894' : '#FF6B6B')
+        .fontColor(bill.type === BillType.INCOME ? $r('app.color.success_color') : $r('app.color.danger_color'))
     }
     .width('100%')
     .padding(16)
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.card_background'))
     .borderRadius(8)
     .margin({ left: 12, right: 12, bottom: 8 })
   }
@@ -183,7 +184,7 @@ struct CategoryDetailPage {
     Button('删除')
       .fontSize(16)
       .fontColor('#FFFFFF')
-      .backgroundColor('#FF6B6B')
+      .backgroundColor($r('app.color.danger_color'))
       .height('100%')
       .onClick(() => {
         this.deleteBill(bill);

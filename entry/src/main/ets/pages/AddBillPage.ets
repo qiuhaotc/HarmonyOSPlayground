@@ -81,7 +81,7 @@ struct AddBillPage {
         }
         .width('100%')
         .height('100%')
-        .backgroundColor('#F5F5F5')
+        .backgroundColor($r('app.color.page_background'))
         .alignItems(HorizontalAlign.Start)
     }
 
@@ -90,7 +90,7 @@ struct AddBillPage {
         Row() {
             Text('返回')
                 .fontSize(16)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .onClick(() => {
                     router.back();
                 })
@@ -98,12 +98,13 @@ struct AddBillPage {
             Text('记一笔')
                 .fontSize(18)
                 .fontWeight(FontWeight.Bold)
+                .fontColor($r('app.color.text_primary'))
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
 
             Text('账单')
                 .fontSize(16)
-                .fontColor('#007DFF')
+                .fontColor($r('app.color.primary_color'))
                 .onClick(() => {
                     router.pushUrl({ url: 'pages/BillListPage' });
                 })
@@ -111,7 +112,7 @@ struct AddBillPage {
         .width('100%')
         .height(56)
         .padding({ left: 16, right: 16 })
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
     }
 
     @Builder
@@ -119,18 +120,18 @@ struct AddBillPage {
         Column() {
             Text('金额')
                 .fontSize(14)
-                .fontColor('#999999')
+                .fontColor($r('app.color.text_tertiary'))
                 .margin({ bottom: 8 })
 
             Row() {
                 Text('¥')
                     .fontSize(32)
                     .fontWeight(FontWeight.Bold)
-                    .fontColor('#333333')
+                    .fontColor($r('app.color.text_primary'))
 
                 TextInput({ text: this.amount, placeholder: '0.00' })
                     .fontSize(20)
-                    .fontColor('#333333')
+                    .fontColor($r('app.color.text_primary'))
                     .backgroundColor(Color.Transparent)
                     .type(InputType.NUMBER_DECIMAL)
                     .layoutWeight(1)
@@ -144,7 +145,7 @@ struct AddBillPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 12 })
     }
 
@@ -153,8 +154,8 @@ struct AddBillPage {
         Row() {
             Button('支出')
                 .fontSize(16)
-                .fontColor(this.selectedType === BillType.EXPENSE ? '#FFFFFF' : '#333333')
-                .backgroundColor(this.selectedType === BillType.EXPENSE ? '#FF6B6B' : '#F0F0F0')
+                .fontColor(this.selectedType === BillType.EXPENSE ? '#FFFFFF' : $r('app.color.text_primary'))
+                .backgroundColor(this.selectedType === BillType.EXPENSE ? $r('app.color.danger_color') : $r('app.color.page_background'))
                 .layoutWeight(1)
                 .onClick(async () => {
                     this.selectedType = BillType.EXPENSE;
@@ -164,8 +165,8 @@ struct AddBillPage {
 
             Button('收入')
                 .fontSize(16)
-                .fontColor(this.selectedType === BillType.INCOME ? '#FFFFFF' : '#333333')
-                .backgroundColor(this.selectedType === BillType.INCOME ? '#00B894' : '#F0F0F0')
+                .fontColor(this.selectedType === BillType.INCOME ? '#FFFFFF' : $r('app.color.text_primary'))
+                .backgroundColor(this.selectedType === BillType.INCOME ? $r('app.color.success_color') : $r('app.color.page_background'))
                 .layoutWeight(1)
                 .margin({ left: 12 })
                 .onClick(async () => {
@@ -176,7 +177,7 @@ struct AddBillPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -185,7 +186,7 @@ struct AddBillPage {
         Column() {
             Text('分类')
                 .fontSize(14)
-                .fontColor('#999999')
+                .fontColor($r('app.color.text_tertiary'))
                 .margin({ bottom: 12 })
             Grid() {
                 ForEach(this.currentCategories, (category: BillCategory) => {
@@ -196,13 +197,13 @@ struct AddBillPage {
 
                             Text(category.name)
                                 .fontSize(14)
-                                .fontColor(this.selectedCategory === category.name ? '#FFFFFF' : '#333333')
+                                .fontColor(this.selectedCategory === category.name ? '#FFFFFF' : $r('app.color.text_primary'))
                                 .margin({ top: 4 })
                         }
                         .width('100%')
                         .padding(12)
                         .borderRadius(8)
-                        .backgroundColor(this.selectedCategory === category.name ? category.color : '#F0F0F0')
+                        .backgroundColor(this.selectedCategory === category.name ? category.color : $r('app.color.page_background'))
                         .onClick(() => {
                             this.selectedCategory = category.name;
                         })
@@ -216,7 +217,7 @@ struct AddBillPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -225,11 +226,11 @@ struct AddBillPage {
         Row() {
             Text('日期')
                 .fontSize(14)
-                .fontColor('#999999')
+                .fontColor($r('app.color.text_tertiary'))
 
             Text(DateUtil.formatDateChinese(this.selectedDate))
                 .fontSize(16)
-                .fontColor('#007DFF')
+                .fontColor($r('app.color.primary_color'))
                 .layoutWeight(1)
                 .textAlign(TextAlign.End)
                 .onClick(() => {
@@ -239,7 +240,7 @@ struct AddBillPage {
         .width('100%')
         .height(48)
         .padding({ left: 16, right: 16 })
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -249,21 +250,21 @@ struct AddBillPage {
             Row() {
                 Text('备注')
                     .fontSize(14)
-                    .fontColor('#999999')
+                    .fontColor($r('app.color.text_tertiary'))
 
                 Blank()
 
                 Text(`${this.note.length}/500`)
                     .fontSize(12)
-                    .fontColor(this.note.length > 500 ? '#FF6B6B' : '#999999')
+                    .fontColor(this.note.length > 500 ? $r('app.color.danger_color') : $r('app.color.text_tertiary'))
             }
             .width('100%')
             .margin({ bottom: 8 })
 
             TextInput({ text: this.note, placeholder: '添加备注信息...' })
                 .fontSize(16)
-                .fontColor('#333333')
-                .backgroundColor('#F0F0F0')
+                .fontColor($r('app.color.text_primary'))
+                .backgroundColor($r('app.color.page_background'))
                 .maxLength(500)
                 .onChange((value: string) => {
                     if (value.length <= 500) {
@@ -273,7 +274,7 @@ struct AddBillPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -282,7 +283,7 @@ struct AddBillPage {
         Button('保存')
             .fontSize(18)
             .fontColor('#FFFFFF')
-            .backgroundColor(this.selectedType === BillType.EXPENSE ? '#FF6B6B' : '#00B894')
+            .backgroundColor(this.selectedType === BillType.EXPENSE ? $r('app.color.danger_color') : $r('app.color.success_color'))
             .width('90%')
             .height(48)
             .margin({ top: 32 })

@@ -32,14 +32,14 @@ struct Index {
       Text('记账本')
         .fontSize(32)
         .fontWeight(FontWeight.Bold)
-        .fontColor('#333333')
+        .fontColor($r('app.color.text_primary'))
         .margin({ top: 60, bottom: 40 })
 
       // 功能按钮
       Column({ space: 16 }) {
         Button('记一笔')
           .fontSize(20)
-          .backgroundColor($r('sys.color.brand'))
+          .backgroundColor($r('app.color.primary_color'))
           .width('80%')
           .height(56)
           .onClick(() => {
@@ -48,7 +48,7 @@ struct Index {
 
         Button('账单列表')
           .fontSize(20)
-          .backgroundColor('#00B894')
+          .backgroundColor($r('app.color.success_color'))
           .width('80%')
           .height(56)
           .onClick(() => {
@@ -57,7 +57,7 @@ struct Index {
 
         Button('统计分析')
           .fontSize(20)
-          .backgroundColor('#6C5CE7')
+          .backgroundColor($r('app.color.info_color'))
           .width('80%')
           .height(56)
           .onClick(() => {
@@ -66,7 +66,7 @@ struct Index {
 
         Button('关于')
           .fontSize(20)
-          .backgroundColor('#95A5A6')
+          .backgroundColor($r('app.color.text_secondary'))
           .width('80%')
           .height(56)
           .onClick(() => {
@@ -79,18 +79,18 @@ struct Index {
       // 底部说明
       Text('简单记账，清晰理财')
         .fontSize(14)
-        .fontColor('#999999')
+        .fontColor($r('app.color.text_tertiary'))
         .margin({ top: 40 })
 
       if (!this.isInitialized) {
         Text('正在初始化...')
           .fontSize(12)
-          .fontColor('#FF6B6B')
+          .fontColor($r('app.color.danger_color'))
           .margin({ top: 10 })
       }
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F5F5F5')
+    .backgroundColor($r('app.color.page_background'))
   }
 }

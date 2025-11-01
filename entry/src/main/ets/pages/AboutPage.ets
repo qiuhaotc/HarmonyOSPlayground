@@ -26,12 +26,12 @@ struct AboutPage {
             Text('记账本')
               .fontSize(24)
               .fontWeight(FontWeight.Bold)
-              .fontColor('#333333')
+              .fontColor($r('app.color.text_primary'))
               .margin({ top: 16 })
 
             Text('Version 1.0.0')
               .fontSize(14)
-              .fontColor('#999999')
+              .fontColor($r('app.color.text_tertiary'))
               .margin({ top: 8 })
           }
           .width('100%')
@@ -42,14 +42,14 @@ struct AboutPage {
             Text('应用简介')
               .fontSize(16)
               .fontWeight(FontWeight.Medium)
-              .fontColor('#333333')
+              .fontColor($r('app.color.text_primary'))
               .width('100%')
               .padding({ left: 16, right: 16 })
               .margin({ bottom: 12 })
 
             Text('一款简洁实用的记账应用，帮助您轻松管理日常收支，清晰掌握财务状况。')
               .fontSize(14)
-              .fontColor('#666666')
+              .fontColor($r('app.color.text_secondary'))
               .lineHeight(22)
               .width('100%')
               .padding({ left: 16, right: 16 })
@@ -65,7 +65,7 @@ struct AboutPage {
             Text('功能特性')
               .fontSize(16)
               .fontWeight(FontWeight.Medium)
-              .fontColor('#333333')
+              .fontColor($r('app.color.text_primary'))
               .width('100%')
               .padding({ left: 16, right: 16 })
               .margin({ bottom: 12 })
@@ -90,7 +90,7 @@ struct AboutPage {
             Text('开源项目')
               .fontSize(16)
               .fontWeight(FontWeight.Medium)
-              .fontColor('#333333')
+              .fontColor($r('app.color.text_primary'))
               .width('100%')
               .padding({ left: 16, right: 16 })
               .margin({ bottom: 12 })
@@ -103,7 +103,7 @@ struct AboutPage {
                   Text('GitHub 仓库')
                     .fontSize(14)
                     .fontWeight(FontWeight.Medium)
-                    .fontColor('#333333')
+                    .fontColor($r('app.color.text_primary'))
                 }
 
                 Text('https://github.com/qiuhaotc/HarmonyOSPlayground')
@@ -149,7 +149,7 @@ struct AboutPage {
             Text('技术栈')
               .fontSize(16)
               .fontWeight(FontWeight.Medium)
-              .fontColor('#333333')
+              .fontColor($r('app.color.text_primary'))
               .width('100%')
               .padding({ left: 16, right: 16 })
               .margin({ bottom: 12 })
@@ -170,7 +170,7 @@ struct AboutPage {
           // 版权信息
           Text('© 2025 记账本应用')
             .fontSize(12)
-            .fontColor('#999999')
+            .fontColor($r('app.color.text_tertiary'))
             .margin({ bottom: 20 })
         }
         .width('100%')
@@ -180,7 +180,7 @@ struct AboutPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F5F5F5')
+    .backgroundColor($r('app.color.page_background'))
   }
 
   @Builder
@@ -188,7 +188,7 @@ struct AboutPage {
     Row() {
       Text('返回')
         .fontSize(16)
-        .fontColor('#333333')
+        .fontColor($r('app.color.text_primary'))
         .onClick(() => {
           router.back();
         })
@@ -196,6 +196,7 @@ struct AboutPage {
       Text('关于')
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
+        .fontColor($r('app.color.text_primary'))
         .layoutWeight(1)
         .textAlign(TextAlign.Center)
 
@@ -216,7 +217,7 @@ struct AboutPage {
 
       Text(text)
         .fontSize(14)
-        .fontColor('#666666')
+        .fontColor($r('app.color.text_secondary'))
     }
     .width('100%')
     .padding({ top: 4, bottom: 4 })
@@ -229,11 +230,11 @@ struct AboutPage {
         Text(name)
           .fontSize(14)
           .fontWeight(FontWeight.Medium)
-          .fontColor('#333333')
+          .fontColor($r('app.color.text_primary'))
 
         Text(description)
           .fontSize(12)
-          .fontColor('#999999')
+          .fontColor($r('app.color.text_tertiary'))
       }
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)

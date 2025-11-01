@@ -78,7 +78,7 @@ struct BillListPage {
         }
         .width('100%')
         .height('100%')
-        .backgroundColor('#F5F5F5')
+        .backgroundColor($r('app.color.page_background'))
         .alignItems(HorizontalAlign.Start)
     }
 
@@ -87,7 +87,7 @@ struct BillListPage {
         Row() {
             Text('返回')
                 .fontSize(16)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .onClick(() => {
                     router.back();
                 })
@@ -95,13 +95,13 @@ struct BillListPage {
             Text('账单列表')
                 .fontSize(20)
                 .fontWeight(FontWeight.Bold)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
 
             Text('统计')
                 .fontSize(16)
-                .fontColor('#007DFF')
+                .fontColor($r('app.color.primary_color'))
                 .onClick(() => {
                     router.pushUrl({ url: 'pages/StatisticsPage' });
                 })
@@ -109,7 +109,7 @@ struct BillListPage {
         .width('100%')
         .height(56)
         .padding({ left: 16, right: 16 })
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
     }
 
     @Builder
@@ -117,8 +117,8 @@ struct BillListPage {
         Row() {
             Button('<')
                 .fontSize(18)
-                .fontColor('#333333')
-                .backgroundColor('#F0F0F0')
+                .fontColor($r('app.color.text_primary'))
+                .backgroundColor($r('app.color.page_background'))
                 .width(40)
                 .height(40)
                 .onClick(() => {
@@ -128,14 +128,14 @@ struct BillListPage {
             Text(DateUtil.formatYearMonth(`${this.selectedYear}-${this.selectedMonth}`))
                 .fontSize(18)
                 .fontWeight(FontWeight.Medium)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
 
             Button('>')
                 .fontSize(18)
-                .fontColor('#333333')
-                .backgroundColor('#F0F0F0')
+                .fontColor($r('app.color.text_primary'))
+                .backgroundColor($r('app.color.page_background'))
                 .width(40)
                 .height(40)
                 .onClick(() => {
@@ -144,7 +144,7 @@ struct BillListPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -155,11 +155,11 @@ struct BillListPage {
                 Column() {
                     Text('收入')
                         .fontSize(14)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                     Text('¥' + BillStatisticsUtil.formatAmount(this.totalIncome))
                         .fontSize(20)
                         .fontWeight(FontWeight.Bold)
-                        .fontColor('#00B894')
+                        .fontColor($r('app.color.success_color'))
                         .margin({ top: 4 })
                 }
                 .layoutWeight(1)
@@ -167,11 +167,11 @@ struct BillListPage {
                 Column() {
                     Text('支出')
                         .fontSize(14)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                     Text('¥' + BillStatisticsUtil.formatAmount(this.totalExpense))
                         .fontSize(20)
                         .fontWeight(FontWeight.Bold)
-                        .fontColor('#FF6B6B')
+                        .fontColor($r('app.color.danger_color'))
                         .margin({ top: 4 })
                 }
                 .layoutWeight(1)
@@ -179,11 +179,11 @@ struct BillListPage {
                 Column() {
                     Text('结余')
                         .fontSize(14)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                     Text('¥' + BillStatisticsUtil.formatAmount(this.balance))
                         .fontSize(20)
                         .fontWeight(FontWeight.Bold)
-                        .fontColor(this.balance >= 0 ? '#333333' : '#FF6B6B')
+                        .fontColor(this.balance >= 0 ? $r('app.color.text_primary') : $r('app.color.danger_color'))
                         .margin({ top: 4 })
                 }
                 .layoutWeight(1)
@@ -192,7 +192,7 @@ struct BillListPage {
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 12 })
         .borderRadius(8)
     }
@@ -203,7 +203,7 @@ struct BillListPage {
             Button('📤 导出数据')
                 .fontSize(15)
                 .fontColor('#FFFFFF')
-                .backgroundColor('#00B894')
+                .backgroundColor($r('app.color.success_color'))
                 .height(44)
                 .layoutWeight(1)
                 .onClick(() => {
@@ -216,7 +216,7 @@ struct BillListPage {
             Button('📥 导入数据')
                 .fontSize(15)
                 .fontColor('#FFFFFF')
-                .backgroundColor('#6C5CE7')
+                .backgroundColor($r('app.color.info_color'))
                 .height(44)
                 .layoutWeight(1)
                 .onClick(() => {
@@ -254,17 +254,17 @@ struct BillListPage {
                 Text(bill.category)
                     .fontSize(16)
                     .fontWeight(FontWeight.Medium)
-                    .fontColor('#333333')
+                    .fontColor($r('app.color.text_primary'))
 
                 Text(DateUtil.formatDateChinese(bill.date))
                     .fontSize(12)
-                    .fontColor('#999999')
+                    .fontColor($r('app.color.text_tertiary'))
                     .margin({ top: 4 })
 
                 if (bill.note) {
                     Text(bill.note)
                         .fontSize(12)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                         .margin({ top: 4 })
                         .maxLines(1)
                         .textOverflow({ overflow: TextOverflow.Ellipsis })
@@ -276,11 +276,11 @@ struct BillListPage {
             Text((bill.type === BillType.INCOME ? '+' : '-') + '¥' + BillStatisticsUtil.formatAmount(bill.amount))
                 .fontSize(18)
                 .fontWeight(FontWeight.Bold)
-                .fontColor(bill.type === BillType.INCOME ? '#00B894' : '#FF6B6B')
+                .fontColor(bill.type === BillType.INCOME ? $r('app.color.success_color') : $r('app.color.danger_color'))
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .borderRadius(8)
         .margin({ left: 12, right: 12, bottom: 8 })
     }
@@ -290,7 +290,7 @@ struct BillListPage {
         Button('删除')
             .fontSize(16)
             .fontColor('#FFFFFF')
-            .backgroundColor('#FF6B6B')
+            .backgroundColor($r('app.color.danger_color'))
             .height('100%')
             .onClick(() => {
                 this.deleteBill(bill);
@@ -302,7 +302,7 @@ struct BillListPage {
         Button('+')
             .fontSize(32)
             .fontColor('#FFFFFF')
-            .backgroundColor('#007DFF')
+            .backgroundColor($r('app.color.primary_color'))
             .width(56)
             .height(56)
             .borderRadius(28)

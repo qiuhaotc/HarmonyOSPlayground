@@ -131,7 +131,7 @@ struct StatisticsPage {
         }
         .width('100%')
         .height('100%')
-        .backgroundColor('#F5F5F5')
+        .backgroundColor($r('app.color.page_background'))
         .alignItems(HorizontalAlign.Start)
     }
 
@@ -140,7 +140,7 @@ struct StatisticsPage {
         Row() {
             Text('返回')
                 .fontSize(16)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .onClick(() => {
                     router.back();
                 })
@@ -148,6 +148,7 @@ struct StatisticsPage {
             Text('账单统计')
                 .fontSize(18)
                 .fontWeight(FontWeight.Bold)
+                .fontColor($r('app.color.text_primary'))
                 .layoutWeight(1)
                 .textAlign(TextAlign.Center)
 
@@ -157,7 +158,7 @@ struct StatisticsPage {
         .width('100%')
         .height(56)
         .padding({ left: 16, right: 16 })
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
     }
 
     @Builder
@@ -167,8 +168,8 @@ struct StatisticsPage {
             Row() {
                 Button(this.statisticsMode === 'month' ? '按月' : (this.statisticsMode === 'year' ? '按年' : '全部'))
                     .fontSize(14)
-                    .fontColor('#007DFF')
-                    .backgroundColor('#E6F2FF')
+                    .fontColor($r('app.color.primary_color'))
+                    .backgroundColor($r('app.color.page_background'))
                     .height(32)
                     .onClick(() => {
                         if (this.statisticsMode === 'month') {
@@ -195,8 +196,8 @@ struct StatisticsPage {
                 Row() {
                     Button('<')
                         .fontSize(18)
-                        .fontColor('#333333')
-                        .backgroundColor('#F0F0F0')
+                        .fontColor($r('app.color.text_primary'))
+                        .backgroundColor($r('app.color.page_background'))
                         .width(40)
                         .height(40)
                         .onClick(() => {
@@ -212,14 +213,14 @@ struct StatisticsPage {
                         : `${this.selectedYear}年`)
                         .fontSize(18)
                         .fontWeight(FontWeight.Medium)
-                        .fontColor('#333333')
+                        .fontColor($r('app.color.text_primary'))
                         .layoutWeight(1)
                         .textAlign(TextAlign.Center)
 
                 Button('>')
                     .fontSize(18)
-                    .fontColor('#333333')
-                    .backgroundColor('#F0F0F0')
+                    .fontColor($r('app.color.text_primary'))
+                    .backgroundColor($r('app.color.page_background'))
                     .width(40)
                     .height(40)
                     .onClick(() => {
@@ -237,14 +238,14 @@ struct StatisticsPage {
                 Text('全部账单统计')
                     .fontSize(18)
                     .fontWeight(FontWeight.Medium)
-                    .fontColor('#333333')
+                    .fontColor($r('app.color.text_primary'))
                     .width('100%')
                     .textAlign(TextAlign.Center)
                     .padding(12)
             }
         }
         .width('100%')
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 1 })
     }
 
@@ -255,11 +256,11 @@ struct StatisticsPage {
                 Column() {
                     Text('收入')
                         .fontSize(14)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                     Text('¥' + BillStatisticsUtil.formatAmount(this.totalIncome))
                         .fontSize(24)
                         .fontWeight(FontWeight.Bold)
-                        .fontColor('#00B894')
+                        .fontColor($r('app.color.success_color'))
                         .margin({ top: 8 })
                 }
                 .layoutWeight(1)
@@ -267,11 +268,11 @@ struct StatisticsPage {
                 Column() {
                     Text('支出')
                         .fontSize(14)
-                        .fontColor('#666666')
+                        .fontColor($r('app.color.text_secondary'))
                     Text('¥' + BillStatisticsUtil.formatAmount(this.totalExpense))
                         .fontSize(24)
                         .fontWeight(FontWeight.Bold)
-                        .fontColor('#FF6B6B')
+                        .fontColor($r('app.color.danger_color'))
                         .margin({ top: 8 })
                 }
                 .layoutWeight(1)
@@ -284,20 +285,20 @@ struct StatisticsPage {
             Row() {
                 Text('结余')
                     .fontSize(14)
-                    .fontColor('#666666')
+                    .fontColor($r('app.color.text_secondary'))
 
                 Blank()
 
                 Text('¥' + BillStatisticsUtil.formatAmount(this.totalIncome - this.totalExpense))
                     .fontSize(24)
                     .fontWeight(FontWeight.Bold)
-                    .fontColor((this.totalIncome - this.totalExpense) >= 0 ? '#00B894' : '#FF6B6B')
+                    .fontColor((this.totalIncome - this.totalExpense) >= 0 ? $r('app.color.success_color') : $r('app.color.danger_color'))
             }
             .width('100%')
         }
         .width('100%')
         .padding(16)
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .margin({ top: 12 })
         .borderRadius(8)
     }
@@ -308,14 +309,14 @@ struct StatisticsPage {
             Text('分类统计')
                 .fontSize(16)
                 .fontWeight(FontWeight.Bold)
-                .fontColor('#333333')
+                .fontColor($r('app.color.text_primary'))
                 .width('100%')
                 .padding({ left: 16, top: 16, bottom: 8 })
 
             if (this.categoryStats.length === 0) {
                 Text('暂无数据')
                     .fontSize(14)
-                    .fontColor('#999999')
+                    .fontColor($r('app.color.text_tertiary'))
                     .width('100%')
                     .textAlign(TextAlign.Center)
                     .padding(32)
@@ -330,7 +331,7 @@ struct StatisticsPage {
         }
         .width('100%')
         .margin({ top: 12 })
-        .backgroundColor('#FFFFFF')
+        .backgroundColor($r('app.color.card_background'))
         .borderRadius(8)
     }
 
@@ -347,11 +348,11 @@ struct StatisticsPage {
                     Text(stat.category)
                         .fontSize(16)
                         .fontWeight(FontWeight.Medium)
-                        .fontColor('#333333')
+                        .fontColor($r('app.color.text_primary'))
 
                     Text(stat.percentage + '%')
                         .fontSize(12)
-                        .fontColor('#999999')
+                        .fontColor($r('app.color.text_tertiary'))
                         .margin({ top: 4 })
                 }
                 .alignItems(HorizontalAlign.Start)
@@ -360,7 +361,7 @@ struct StatisticsPage {
                 Text('¥' + BillStatisticsUtil.formatAmount(stat.amount))
                     .fontSize(18)
                     .fontWeight(FontWeight.Bold)
-                    .fontColor(stat.type === BillType.INCOME ? '#00B894' : '#FF6B6B')
+                    .fontColor(stat.type === BillType.INCOME ? $r('app.color.success_color') : $r('app.color.danger_color'))
             }
             .width('100%')
             .padding(16)
@@ -369,7 +370,7 @@ struct StatisticsPage {
             Row()
                 .width(stat.percentage + '%')
                 .height(4)
-                .backgroundColor(stat.type === BillType.INCOME ? '#00B894' : '#FF6B6B')
+                .backgroundColor(stat.type === BillType.INCOME ? $r('app.color.success_color') : $r('app.color.danger_color'))
                 .borderRadius(2)
 
             Divider()
