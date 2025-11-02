@@ -300,6 +300,29 @@ export class BillDatabase {
     }
 
     /**
+     * 按日期范围查询账单
+     */
+    async queryBillsByDateRange(startDate: string, endDate: string): Promise<BillModel[]> {
+        if (!this.rdbStore) {
+            throw new Error('数据库未初始化');
+        }
+
+        const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
+        predicates.between('date', startDate, endDate);
+        predicates.orderByDesc('date').orderByDesc('createTime');
+
+        try {
+            const resultSet = await this.rdbStore.query(predicates);
+            const bills = this.convertResultSetToBills(resultSet);
+            resultSet.close();
+            return bills;
+        } catch (err) {
+            console.error('BillDatabase: 按日期范围查询账单失败', JSON.stringify(err));
+            throw new Error(`按日期范围查询账单失败: ${err}`);
+        }
+    }
+
+    /**
      * 将ResultSet转换为BillModel数组
      */
     private convertResultSetToBills(resultSet: relationalStore.ResultSet): BillModel[] {

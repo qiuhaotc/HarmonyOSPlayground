@@ -20,6 +20,11 @@ struct BillListPage {
     @State totalIncome: number = 0; // 总收入
     @State totalExpense: number = 0; // 总支出
     @State balance: number = 0; // 结余
+    @State showClearDialog: boolean = false; // 显示清空账单弹窗
+    @State clearStartDate: string = ''; // 清空起始日期
+    @State clearEndDate: string = ''; // 清空结束日期
+    @State showClearStartDatePicker: boolean = false; // 显示清空起始日期选择器
+    @State showClearEndDatePicker: boolean = false; // 显示清空结束日期选择器
 
     private billDb: BillDatabase = BillDatabase.getInstance();
 
@@ -73,8 +78,16 @@ struct BillListPage {
             // 账单列表（已支持滚动）
             this.buildBillList();
 
+            // 清空账单按钮
+            this.buildClearButton();
+
             // 添加按钮
             this.buildAddButton();
+
+            // 清空账单弹窗
+            if (this.showClearDialog) {
+                this.buildClearBillsDialog();
+            }
         }
         .width('100%')
         .height('100%')
@@ -240,6 +253,20 @@ struct BillListPage {
         .width('100%')
         .layoutWeight(1)
         .margin({ top: 12 })
+    }
+
+    @Builder
+    buildClearButton() {
+        Button('🗑️ 清空账单')
+            .fontSize(15)
+            .fontColor('#FFFFFF')
+            .backgroundColor($r('app.color.danger_color'))
+            .height(44)
+            .width('100%')
+            .margin({ left: 12, right: 12, top: 8, bottom: 8 })
+            .onClick(() => {
+                this.showClearBillsDialog();
+            })
     }
 
     @Builder
@@ -510,6 +537,297 @@ struct BillListPage {
             console.error('执行导入失败', JSON.stringify(err));
             this.getUIContext().showAlertDialog({
                 message: '导入过程出错: ' + (err as BusinessError).message,
+                confirm: {
+                    value: '确定', action: () => {
+                    }
+                }
+            });
+        }
+    }
+
+    // 显示清空账单对话框
+    showClearBillsDialog() {
+        // 初始化默认日期范围（当前月份的第一天到最后一天）
+        const year = parseInt(this.selectedYear);
+        const month = parseInt(this.selectedMonth);
+        this.clearStartDate = `${this.selectedYear}-${this.selectedMonth}-01`;
+        
+        // 计算月份最后一天
+        const lastDay = new Date(year, month, 0).getDate();
+        this.clearEndDate = `${this.selectedYear}-${this.selectedMonth}-${String(lastDay).padStart(2, '0')}`;
+        
+        this.showClearDialog = true;
+    }
+
+    // 清空账单弹窗
+    @Builder
+    buildClearBillsDialog() {
+        Stack() {
+            // 遮罩层
+            Column()
+                .width('100%')
+                .height('100%')
+                .backgroundColor('rgba(0, 0, 0, 0.5)')
+                .onClick(() => {
+                    this.showClearDialog = false;
+                    this.showClearStartDatePicker = false;
+                    this.showClearEndDatePicker = false;
+                })
+
+            // 对话框内容
+            Column() {
+                Text('清空账单')
+                    .fontSize(18)
+                    .fontWeight(FontWeight.Bold)
+                    .fontColor($r('app.color.text_primary'))
+                    .margin({ bottom: 20 })
+
+                // 起始日期
+                Row() {
+                    Text('起始日期:')
+                        .fontSize(14)
+                        .fontColor($r('app.color.text_primary'))
+                        .width(80)
+
+                    Text(this.clearStartDate)
+                        .fontSize(14)
+                        .fontColor(this.clearStartDate ? $r('app.color.primary_color') : $r('app.color.text_tertiary'))
+                        .layoutWeight(1)
+                        .onClick(() => {
+                            this.showClearStartDatePickerDialog();
+                        })
+                }
+                .width('100%')
+                .margin({ bottom: 16 })
+
+                // 结束日期
+                Row() {
+                    Text('结束日期:')
+                        .fontSize(14)
+                        .fontColor($r('app.color.text_primary'))
+                        .width(80)
+
+                    Text(this.clearEndDate)
+                        .fontSize(14)
+                        .fontColor(this.clearEndDate ? $r('app.color.primary_color') : $r('app.color.text_tertiary'))
+                        .layoutWeight(1)
+                        .onClick(() => {
+                            this.showClearEndDatePickerDialog();
+                        })
+                }
+                .width('100%')
+                .margin({ bottom: 20 })
+
+                // 按钮
+                Row() {
+                    Button('确认清空')
+                        .fontSize(15)
+                        .fontColor('#FFFFFF')
+                        .backgroundColor($r('app.color.danger_color'))
+                        .layoutWeight(1)
+                        .onClick(() => {
+                            this.confirmClearBills();
+                        })
+
+                    Blank()
+                        .width(12)
+
+                    Button('取消')
+                        .fontSize(15)
+                        .fontColor($r('app.color.text_primary'))
+                        .backgroundColor($r('app.color.page_background'))
+                        .layoutWeight(1)
+                        .onClick(() => {
+                            this.showClearDialog = false;
+                        })
+                }
+                .width('100%')
+            }
+            .width('85%')
+            .padding(20)
+            .backgroundColor($r('app.color.card_background'))
+            .borderRadius(12)
+
+            // 起始日期选择器
+            if (this.showClearStartDatePicker) {
+                Column() {
+                    DatePicker({
+                        start: new Date('2000-01-01'),
+                        selected: this.parseDateString(this.clearStartDate)
+                    })
+                        .onChange((value: DatePickerResult) => {
+                            this.clearStartDate = this.formatDatePickerResult(value);
+                            this.showClearStartDatePicker = false;
+                        })
+
+                    Button('取消')
+                        .fontSize(14)
+                        .margin({ top: 10 })
+                        .onClick(() => {
+                            this.showClearStartDatePicker = false;
+                        })
+                }
+                .width('85%')
+                .padding(20)
+                .backgroundColor($r('app.color.card_background'))
+                .borderRadius(12)
+            }
+
+            // 结束日期选择器
+            if (this.showClearEndDatePicker) {
+                Column() {
+                    DatePicker({
+                        start: new Date('2000-01-01'),
+                        selected: this.parseDateString(this.clearEndDate)
+                    })
+                        .onChange((value: DatePickerResult) => {
+                            this.clearEndDate = this.formatDatePickerResult(value);
+                            this.showClearEndDatePicker = false;
+                        })
+
+                    Button('取消')
+                        .fontSize(14)
+                        .margin({ top: 10 })
+                        .onClick(() => {
+                            this.showClearEndDatePicker = false;
+                        })
+                }
+                .width('85%')
+                .padding(20)
+                .backgroundColor($r('app.color.card_background'))
+                .borderRadius(12)
+            }
+        }
+        .width('100%')
+        .height('100%')
+        .position({ x: 0, y: 0 })
+        .zIndex(1000)
+        .alignContent(Alignment.Center)
+    }
+
+    // 显示起始日期选择器
+    showClearStartDatePickerDialog() {
+        this.showClearStartDatePicker = true;
+        this.showClearEndDatePicker = false;
+    }
+
+    // 显示结束日期选择器
+    showClearEndDatePickerDialog() {
+        this.showClearEndDatePicker = true;
+        this.showClearStartDatePicker = false;
+    }
+
+    // 解析日期字符串为Date对象
+    parseDateString(dateStr: string): Date {
+        if (!dateStr) {
+            return new Date();
+        }
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        }
+        return new Date();
+    }
+
+    // 格式化DatePicker结果为YYYY-MM-DD
+    formatDatePickerResult(value: DatePickerResult): string {
+        const year = value.year;
+        const month = String((value.month ?? 0) + 1).padStart(2, '0');
+        const day = String(value.day).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+
+    // 确认清空账单
+    async confirmClearBills() {
+        // 验证日期范围
+        if (this.clearStartDate > this.clearEndDate) {
+            this.getUIContext().showAlertDialog({
+                message: '起始日期不能大于结束日期',
+                confirm: {
+                    value: '确定', action: () => {
+                    }
+                }
+            });
+            return;
+        }
+
+        try {
+            // 使用日期范围查询,提升性能
+            const billsToDelete = await this.billDb.queryBillsByDateRange(this.clearStartDate, this.clearEndDate);
+
+            if (billsToDelete.length === 0) {
+                this.getUIContext().showAlertDialog({
+                    message: '该日期范围内没有账单记录',
+                    confirm: {
+                        value: '确定', action: () => {
+                            this.showClearDialog = false;
+                        }
+                    }
+                });
+                return;
+            }
+
+            // 显示确认对话框
+            this.getUIContext().showAlertDialog({
+                message: `确定要删除 ${this.clearStartDate} 至 ${this.clearEndDate} 期间的 ${billsToDelete.length} 条账单记录吗？\n\n此操作不可恢复！`,
+                primaryButton: {
+                    value: '删除',
+                    fontColor: '#FF0000',
+                    action: async () => {
+                        await this.performClearBills(billsToDelete);
+                    }
+                },
+                secondaryButton: {
+                    value: '取消',
+                    action: () => {
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('查询账单失败', JSON.stringify(err));
+            this.getUIContext().showAlertDialog({
+                message: '查询账单失败: ' + (err as BusinessError).message,
+                confirm: {
+                    value: '确定', action: () => {
+                    }
+                }
+            });
+        }
+    }
+
+    // 执行清空账单
+    async performClearBills(billsToDelete: BillModel[]) {
+        try {
+            let successCount = 0;
+            let failCount = 0;
+
+            for (const bill of billsToDelete) {
+                if (bill.id) {
+                    try {
+                        await this.billDb.deleteBill(bill.id);
+                        successCount++;
+                    } catch (err) {
+                        console.error('删除账单失败', JSON.stringify(err));
+                        failCount++;
+                    }
+                }
+            }
+
+            this.showClearDialog = false;
+            await this.loadBills();
+
+            this.getUIContext().showAlertDialog({
+                message: `清空完成\n成功删除: ${successCount} 条\n失败: ${failCount} 条`,
+                confirm: {
+                    value: '确定', action: () => {
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('清空账单失败', JSON.stringify(err));
+            this.getUIContext().showAlertDialog({
+                message: '清空账单失败: ' + (err as BusinessError).message,
                 confirm: {
                     value: '确定', action: () => {
                     }
