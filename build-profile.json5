@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": ".\\SignConfigs\\default_RecordBills_iYgYPpZPNpilwBVSTB1XJkGstDP12Oq539qY75hZty8=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B972AE190CDB29C100AE1EC9B92E26E893C39F9EC861E7D2AF02C841916E95CECF4DE3D9CADB70E",
-          "profile": ".\\SignConfigs\\default_RecordBills_iYgYPpZPNpilwBVSTB1XJkGstDP12Oq539qY75hZty8=.p7b",
+          "storeFile": "D:/Code/HarmonyOS/SignedInfo/store.p12",
+          "storePassword": "00000038FDC3C4D8C6F666BF5CAA99392563ACC28B045F9494758B12DD5E8E71A94EFC6870C4B2C61B03007D257EE5E4F4AC4163BAC1497BDBB4CC5AFE1CBAB7C584BFB35D2B0CF0",
+          "keyAlias": "Alias",
+          "keyPassword": "000000387814DFA77ABCA1A933B93D624F7A255062AFE73F47455740D44B49F3AD2DA310C32846DEF0099D5D0A652AAD62E93E767205455B54D3593BC107D9CC3B34C2F97FE3364E",
           "signAlg": "SHA256withECDSA",
-          "storeFile": ".\\SignConfigs\\default_RecordBills_iYgYPpZPNpilwBVSTB1XJkGstDP12Oq539qY75hZty8=.p12",
-          "storePassword": "0000001BB07AE43960F8E11AF9A177B6CD05E61C61FAD7B6BE7AB1EAC08A0589137145F2030D55AEC646ED"
+          "profile": "D:/Code/HarmonyOS/SignedInfo/billingRelease.p7b",
+          "certpath": "D:/Code/HarmonyOS/SignedInfo/cert.cer"
         }
       }
     ],
