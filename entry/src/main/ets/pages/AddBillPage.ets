@@ -523,8 +523,8 @@ struct AddBillPage {
         const selectedMonth = parseInt(dateArray[1]);
         const selectedDay = parseInt(dateArray[2]);
         
-        // 如果启用了定期记账，开始日期必须是今天或未来
-        const startDate = this.isRecurring ? new Date() : new Date('2000-1-1');
+        // 允许选择任意日期，包括历史日期
+        const startDate = new Date('2000-1-1');
         
         this.getUIContext().showDatePickerDialog({
             start: startDate,
@@ -587,7 +587,7 @@ struct AddBillPage {
             }
         } catch (err) {
             this.getUIContext().showAlertDialog({
-                message: '保存失败: ' + JSON.stringify(err),
+                message: '保存失败: ' + (err as Error)?.message,
                 confirm: {
                     value: '确定',
                     action: () => {
@@ -645,7 +645,7 @@ struct AddBillPage {
         );
 
         // 验证配置
-        const validationError = this.recurringService.validateConfig(config, DateUtil.getCurrentDate());
+        const validationError = this.recurringService.validateConfig(config, '2000-01-01');
         if (validationError) {
             throw new Error(validationError);
         }

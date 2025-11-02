@@ -248,15 +248,15 @@ export class RecurringBillService {
   /**
    * 验证定期配置是否合法
    */
-  validateConfig(config: RecurringBillConfig, currentDate: string): string | null {
+  validateConfig(config: RecurringBillConfig, minDate: string): string | null {
     // 验证金额
     if (config.amount <= 0) {
       return '金额必须大于0';
     }
 
     // 验证开始日期必须是今天或未来
-    if (config.startDate < currentDate) {
-      return '开始日期必须是今天或未来日期';
+    if (config.startDate < minDate) {
+      return '开始日期必须大于等于' + minDate;
     }
 
     // 验证间隔

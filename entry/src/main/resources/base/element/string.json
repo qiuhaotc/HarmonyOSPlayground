@@ -2,11 +2,11 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "module description"
+      "value": "记账本"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "description"
+      "value": "简单记账，清晰理财"
     },
     {
       "name": "EntryAbility_label",
