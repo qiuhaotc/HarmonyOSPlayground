@@ -95,8 +95,8 @@ export const DEFAULT_CATEGORIES: BillCategory[] = [
   new BillCategory(9, '其他', BillType.EXPENSE, '📝', '#B2BEC3'),
   
   // 收入分类
-  new BillCategory(10, '工资', BillType.INCOME, '💰', '#00B894'),
-  new BillCategory(11, '奖金', BillType.INCOME, '🎁', '#00CEC9'),
+  new BillCategory(10, '工资', BillType.INCOME, '💰', '#FFA726'),
+  new BillCategory(11, '奖金', BillType.INCOME, '🎁', '#FFD54F'),
   new BillCategory(12, '投资', BillType.INCOME, '📈', '#6C5CE7'),
   new BillCategory(13, '兼职', BillType.INCOME, '💼', '#FDCB6E'),
   new BillCategory(14, '其他', BillType.INCOME, '📝', '#B2BEC3'),

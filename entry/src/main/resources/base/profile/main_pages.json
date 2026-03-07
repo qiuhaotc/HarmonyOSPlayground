@@ -1,5 +1,6 @@
 {
   "src": [
+    "pages/LauncherPage",
     "pages/Index",
     "pages/AddBillPage",
     "pages/BillListPage",

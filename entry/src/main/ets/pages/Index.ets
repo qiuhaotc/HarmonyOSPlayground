@@ -30,7 +30,7 @@ struct Index {
     Scroll() {
       Column() {
         // 标题
-        Text('记账本')
+        Text('轻松来记账')
           .fontSize(32)
           .fontWeight(FontWeight.Bold)
           .fontColor($r('app.color.text_primary'))
@@ -67,7 +67,7 @@ struct Index {
 
           Button('定期记账')
             .fontSize(20)
-            .backgroundColor('#FF9800')
+            .backgroundColor('#E91E63')
             .width('80%')
             .height(56)
             .onClick(() => {
