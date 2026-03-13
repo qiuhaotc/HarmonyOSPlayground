@@ -42,7 +42,7 @@ struct Index {
             .fontSize(20)
             .backgroundColor($r('app.color.primary_color'))
             .width('80%')
-            .height(56)
+            .constraintSize({ minHeight: 56 })
             .onClick(() => {
               router.pushUrl({ url: 'pages/AddBillPage' });
             })
@@ -51,7 +51,7 @@ struct Index {
             .fontSize(20)
             .backgroundColor($r('app.color.success_color'))
             .width('80%')
-            .height(56)
+            .constraintSize({ minHeight: 56 })
             .onClick(() => {
               router.pushUrl({ url: 'pages/BillListPage' });
             })
@@ -60,7 +60,7 @@ struct Index {
             .fontSize(20)
             .backgroundColor($r('app.color.info_color'))
             .width('80%')
-            .height(56)
+            .constraintSize({ minHeight: 56 })
             .onClick(() => {
               router.pushUrl({ url: 'pages/StatisticsPage' });
             })
@@ -69,7 +69,7 @@ struct Index {
             .fontSize(20)
             .backgroundColor('#E91E63')
             .width('80%')
-            .height(56)
+            .constraintSize({ minHeight: 56 })
             .onClick(() => {
               router.pushUrl({ url: 'pages/RecurringBillManagePage' });
             })
@@ -78,7 +78,7 @@ struct Index {
             .fontSize(20)
             .backgroundColor($r('app.color.text_secondary'))
             .width('80%')
-            .height(56)
+            .constraintSize({ minHeight: 56 })
             .onClick(() => {
               router.pushUrl({ url: 'pages/AboutPage' });
             })
@@ -90,7 +90,7 @@ struct Index {
         Text('简单记账，清晰理财')
           .fontSize(14)
           .fontColor($r('app.color.text_tertiary'))
-          .margin({ top: 40, bottom: 40 })
+          .margin({ top: 40, bottom: 60 })
 
         if (!this.isInitialized) {
           Text('正在初始化...')

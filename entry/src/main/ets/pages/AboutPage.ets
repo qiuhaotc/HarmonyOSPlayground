@@ -3,9 +3,6 @@ import common from '@ohos.app.ability.common';
 import { Want } from '@kit.AbilityKit';
 import { BusinessError } from '@ohos.base';
 
-const PRIVACY_AGREEMENT_URL: string =
-  'https://agreement-drcn.hispace.dbankcloud.cn/index.html?lang=zh&agreementId=1900822239331276096';
-
 /**
  * 关于页面
  */
@@ -169,65 +166,6 @@ struct AboutPage {
           }
           .width('100%')
           .margin({ bottom: 40 })
-
-          // 隐私协议
-          Column() {
-            Text('隐私政策')
-              .fontSize(16)
-              .fontWeight(FontWeight.Medium)
-              .fontColor($r('app.color.text_primary'))
-              .width('100%')
-              .padding({ left: 16, right: 16 })
-              .margin({ bottom: 12 })
-
-            Row() {
-              Column({ space: 4 }) {
-                Row() {
-                  Text('🔒 ')
-                    .fontSize(16)
-                  Text('隐私政策与用户协议')
-                    .fontSize(14)
-                    .fontWeight(FontWeight.Medium)
-                    .fontColor($r('app.color.text_primary'))
-                }
-
-                Text(PRIVACY_AGREEMENT_URL)
-                  .fontSize(11)
-                  .maxLines(2)
-                  .fontColor($r('app.color.text_tertiary'))
-              }
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1)
-
-              Text('查看')
-                .fontSize(14)
-                .fontColor($r('app.color.primary_color'))
-                .borderRadius(4)
-                .padding({ left: 16, right: 16, top: 6, bottom: 6 })
-            }
-            .width('100%')
-            .padding(16)
-            .borderRadius(8)
-            .margin({ left: 12, right: 12 })
-            .onClick(() => {
-              const wantInfo: Want = {
-                action: 'ohos.want.action.viewData',
-                entities: ['entity.system.browsable'],
-                uri: PRIVACY_AGREEMENT_URL
-              };
-              const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
-              context.startAbility(wantInfo)
-                .catch((err: BusinessError) => {
-                  console.error('打开隐私协议失败:', err);
-                  this.getUIContext().getPromptAction().showToast({
-                    message: '打开隐私协议失败，请稍后重试',
-                    duration: 2000
-                  });
-                });
-            })
-          }
-          .width('100%')
-          .margin({ bottom: 24 })
 
           // 版权信息
           Text('© 2025 轻松来记账')

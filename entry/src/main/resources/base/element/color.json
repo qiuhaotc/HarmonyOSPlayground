@@ -22,7 +22,7 @@
     },
     {
       "name": "text_tertiary",
-      "value": "#999999"
+      "value": "#757575"
     },
     {
       "name": "divider_color",
@@ -34,7 +34,7 @@
     },
     {
       "name": "success_color",
-      "value": "#F9A825"
+      "value": "#8A6200"
     },
     {
       "name": "warning_color",
