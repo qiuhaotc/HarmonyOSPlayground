@@ -1,4 +1,4 @@
-# 记账本应用 - HarmonyOS
+# 轻松来记账 - HarmonyOS
 
 这是一个基于HarmonyOS(ArkTS)开发的记账应用,支持记录日常收支、定期记账、按年月和分类进行统计分析。
 
